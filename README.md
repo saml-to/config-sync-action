@@ -1,8 +1,10 @@
-# action-name
+# config-sync-action
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/org/repo?label=version) ![GitHub issues](https://img.shields.io/github/issues/org/repo) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/org/repo/Push%20to%20Main) [![Gitter](https://img.shields.io/gitter/room/org/repo)](https://gitter.im/org/repo)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/saml-to/config-sync-action?label=version) ![GitHub issues](https://img.shields.io/github/issues/saml-to/config-sync-action) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/saml-to/config-sync-action/Push%20to%20Main) [![Gitter](https://img.shields.io/gitter/room/saml-to/config-sync-action)](https://gitter.im/saml-to/config-sync-action)
 
-Action Description
+This action notifies the SAML.to backend that the repository was updated.
+
+The SAML.to backend will cache the contents of the `saml-to.yml` configuration file in the **default branch** of the repository.
 
 ## Usage
 
@@ -10,39 +12,38 @@ See [action.yml](action.yml)
 
 ```yaml
 steps:
-  - uses: saml-to/assume-aws-role-action@v1
-    with:
-      inputKey: inputValue
+  - uses: saml-to/config-sync-action@v1
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Inputs
 
-### `inputKey` (**Required**)
+### `dryrun` (_Optional_)
 
-Input Key
+Pull and validate the configuration but don't store it.
 
-### `optionalInputKey` (_Optional_)
+**Default**: `false`
 
-Optional Input Key
+### `verbose` (_Optional_)
 
-**Default**: ``
+Output the processed configuration.
+
+**Default**: `false`
 
 ## Outputs
 
-### `outputKey`
-
-Output key
+This action has no outputs.
 
 ## Maintainers
 
-- [Org](https://github.com/org)
+- [Scaffoldly](https://github.com/scaffoldly)
+- [cnuss](https://github.com/cnuss)
 
 ## Help & Support
 
-- [Message us on Gitter](https://gitter.im/org/repo)
-- [Discussions](https://github.com/org/repo/discussions)
+- [Message us on Gitter](https://gitter.im/saml-to/config-sync-action)
+- [Discussions](https://github.com/saml-to/config-sync-action/discussions)
 
 ## License
 

@@ -1,6 +1,8 @@
-import { exportVariable, getInput, info, setFailed, setOutput } from '@actions/core';
+import { getInput, info, setFailed } from '@actions/core';
+import { Configuration, IDPApi } from '../api/github-sls-rest-api';
+import { boolean } from 'boolean';
 
-const { GITHUB_TOKEN, GITHUB_REPOSITORY } = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, DEV, API_KEY } = process.env;
 
 export class Action {
   async run(): Promise<void> {
@@ -8,12 +10,6 @@ export class Action {
       setFailed(`Missing GITHUB_TOKEN environment variable`);
       return;
     }
-
-    const inputKey = getInput('inputKey', { required: true });
-    const optionalInputKey = getInput('optionalInputKey', { required: false });
-
-    info(`Input: ${inputKey}`);
-    info(`Optional Input: ${optionalInputKey}`);
 
     if (!GITHUB_REPOSITORY) {
       throw new Error('Missing GITHUB_REPOSITORY environment variable');
@@ -26,9 +22,27 @@ export class Action {
       );
     }
 
-    const output = 'hello world';
+    const configuration = new Configuration({ accessToken: GITHUB_TOKEN });
+    if (DEV) {
+      configuration.basePath = 'https://sso-nonlive.saml.to/github';
+      configuration.apiKey = API_KEY;
+    }
 
-    exportVariable('OUTPUT', output);
-    setOutput('output', output);
+    const api = new IDPApi(configuration);
+
+    const dryrun = boolean(getInput('dryrun', { required: false }));
+    const verbose = boolean(getInput('verbose', { required: false }));
+
+    const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun);
+
+    if (verbose) {
+      info(`Configuration: ${JSON.stringify(response.config)}`);
+    }
+
+    info(
+      `Configuration at \`${response.path}\` ${dryrun ? 'refreshed' : 'fetched'} for \`${
+        response.org
+      }/${response.repo}\` (dryrun: ${response.dryrun})`,
+    );
   }
 }

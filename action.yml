@@ -4,15 +4,12 @@ branding:
   icon: 'arrow-up-circle'
   color: 'blue'
 inputs:
-  inputKey:
-    description: Input Key
-    required: true
-  optionalInputKey:
-    description: Optional Input Key
+  dryrun:
+    description: Fetch the configuration only, don't process it.
     required: false
-outputs:
-  outputKey:
-    description: Output Key
+  verbose:
+    description: Output the processed configuration
+    required: false
 runs:
   using: 'node16'
   main: 'dist/main.js'
