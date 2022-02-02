@@ -1,5 +1,5 @@
 name: 'SAML.to Config Sync'
-description: 'This action notifies the SAML.to backend that the repository was updated and will read and cache the contents of the `saml-to.yml` configuration file within the **default branch** in the repository.'
+description: 'This action notifies the SAML.to backend that the repository was updated.'
 branding:
   icon: 'arrow-up-circle'
   color: 'blue'

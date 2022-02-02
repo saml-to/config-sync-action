@@ -2,7 +2,9 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/saml-to/config-sync-action?label=version) ![GitHub issues](https://img.shields.io/github/issues/saml-to/config-sync-action) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/saml-to/config-sync-action/Push%20to%20Main) [![Gitter](https://img.shields.io/gitter/room/saml-to/config-sync-action)](https://gitter.im/saml-to/config-sync-action)
 
-This action notifies the SAML.to backend that the repository was updated and will read and cache the contents of the `saml-to.yml` configuration file within the **default branch** in the repository.
+This action notifies the SAML.to backend that the repository was updated.
+
+It will read and cache the contents of the `saml-to.yml` configuration file within the **default branch** in the repository.
 
 ## Usage
 
