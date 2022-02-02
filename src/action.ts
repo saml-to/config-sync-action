@@ -1,6 +1,7 @@
-import { getInput, info, setFailed } from '@actions/core';
+import { error, getInput, info, setFailed } from '@actions/core';
 import { Configuration, IDPApi } from '../api/github-sls-rest-api';
 import { boolean } from 'boolean';
+import axios from 'axios';
 
 const { GITHUB_TOKEN, GITHUB_REPOSITORY, DEV, API_KEY } = process.env;
 
@@ -37,16 +38,30 @@ export class Action {
       info(`Refreshing configuration for \`${org}/${repo}\` (dryrun: ${dryrun})`);
     }
 
-    const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun);
+    try {
+      const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun);
 
-    if (verbose) {
-      info(`Configuration: ${JSON.stringify(response.config, null, 2)}`);
+      if (verbose) {
+        info(`Configuration: ${JSON.stringify(response.config, null, 2)}`);
+      }
+
+      info(
+        `Configuration at \`${response.path}\` ${dryrun ? 'refreshed' : 'fetched'} for \`${
+          response.org
+        }/${response.repo}\` (branch: ${response.branch}) (dryrun: ${response.dryrun})`,
+      );
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response && e.response.data) {
+          if (verbose) {
+            error(`Backend Error: ${JSON.stringify(e.response.data)}`);
+          }
+          if (e.response.data.message) {
+            throw new Error(`${e.response.data.message} (HTTP ${e.response.status})`);
+          }
+        }
+      }
+      throw e;
     }
-
-    info(
-      `Configuration at \`${response.path}\` ${dryrun ? 'refreshed' : 'fetched'} for \`${
-        response.org
-      }/${response.repo}\` (branch: ${response.branch}) (dryrun: ${response.dryrun})`,
-    );
   }
 }
