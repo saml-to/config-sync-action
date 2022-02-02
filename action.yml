@@ -4,9 +4,6 @@ branding:
   icon: 'arrow-up-circle'
   color: 'blue'
 inputs:
-  ref:
-    description: "Use a specific ref for the branch which contains the config (default: the repo's default branch, e.g. 'main')"
-    required: false
   dryrun:
     description: Fetch the configuration only, don't process it.
     required: false
