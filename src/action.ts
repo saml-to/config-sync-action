@@ -33,16 +33,20 @@ export class Action {
     const dryrun = boolean(getInput('dryrun', { required: false }));
     const verbose = boolean(getInput('verbose', { required: false }));
 
+    if (verbose) {
+      info(`Refreshing configuration for \`${org}/${repo}\` (dryrun: ${dryrun})`);
+    }
+
     const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun);
 
     if (verbose) {
-      info(`Configuration: ${JSON.stringify(response.config)}`);
+      info(`Configuration: ${JSON.stringify(response.config, null, 2)}`);
     }
 
     info(
       `Configuration at \`${response.path}\` ${dryrun ? 'refreshed' : 'fetched'} for \`${
         response.org
-      }/${response.repo}\` (dryrun: ${response.dryrun})`,
+      }/${response.repo}\` (branch: ${response.branch}) (dryrun: ${response.dryrun})`,
     );
   }
 }
