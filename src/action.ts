@@ -3,7 +3,7 @@ import { Configuration, IDPApi } from '../api/github-sls-rest-api';
 import { boolean } from 'boolean';
 import axios from 'axios';
 
-const { GITHUB_TOKEN, GITHUB_REPOSITORY, DEV, API_KEY } = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_SHA, DEV, API_KEY } = process.env;
 
 export class Action {
   async run(): Promise<void> {
@@ -39,7 +39,7 @@ export class Action {
     }
 
     try {
-      const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun);
+      const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun, GITHUB_SHA);
 
       if (verbose) {
         info(`Configuration: ${JSON.stringify(response.config, null, 2)}`);
