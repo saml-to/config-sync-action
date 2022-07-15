@@ -3,7 +3,7 @@ import { Configuration, IDPApi } from '../api/github-sls-rest-api';
 import { boolean } from 'boolean';
 import axios from 'axios';
 
-const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_SHA, DEV, API_KEY } = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_SHA, SAML_TO_NONLIVE, API_KEY } = process.env;
 
 export class Action {
   async run(): Promise<void> {
@@ -24,9 +24,13 @@ export class Action {
     }
 
     const configuration = new Configuration({ accessToken: GITHUB_TOKEN });
-    if (DEV) {
+    if (SAML_TO_NONLIVE) {
       configuration.basePath = 'https://sso-nonlive.saml.to/github';
-      configuration.apiKey = API_KEY;
+      configuration.baseOptions = {
+        headers: {
+          'X-API-KEY': API_KEY,
+        },
+      };
     }
 
     const api = new IDPApi(configuration);
