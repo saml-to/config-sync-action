@@ -26,11 +26,7 @@ export class Action {
     const configuration = new Configuration({ accessToken: GITHUB_TOKEN });
     if (SAML_TO_NONLIVE) {
       configuration.basePath = 'https://sso-nonlive.saml.to/github';
-      configuration.baseOptions = {
-        headers: {
-          'X-API-KEY': API_KEY,
-        },
-      };
+      configuration.apiKey = API_KEY;
     }
 
     const api = new IDPApi(configuration);
