@@ -11,10 +11,21 @@ It will read and cache the contents of the `saml-to.yml` configuration file with
 See [action.yml](action.yml)
 
 ```yaml
-steps:
-  - uses: saml-to/config-sync-action@v1
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: SAML.to Config Sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: saml-to/config-sync-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Inputs
