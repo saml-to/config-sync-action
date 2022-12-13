@@ -3,7 +3,8 @@ import { Configuration, IDPApi } from '../api/github-sls-rest-api';
 import { boolean } from 'boolean';
 import axios from 'axios';
 
-const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_SHA, SAML_TO_NONLIVE, API_KEY } = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_SHA, GITHUB_REF, SAML_TO_NONLIVE, API_KEY } =
+  process.env;
 
 export class Action {
   async run(): Promise<void> {
@@ -34,12 +35,23 @@ export class Action {
     const dryrun = boolean(getInput('dryrun', { required: false }));
     const verbose = boolean(getInput('verbose', { required: false }));
 
+    let commitRef: string | undefined;
+    if (dryrun) {
+      commitRef = GITHUB_REF;
+    }
+
     if (verbose) {
       info(`Refreshing configuration for \`${org}/${repo}\` (dryrun: ${dryrun})`);
     }
 
     try {
-      const { data: response } = await api.refreshOrgRepoConfig(org, repo, dryrun, GITHUB_SHA);
+      const { data: response } = await api.refreshOrgRepoConfig(
+        org,
+        repo,
+        dryrun,
+        GITHUB_SHA,
+        commitRef,
+      );
 
       if (verbose) {
         info(`Configuration: ${JSON.stringify(response.config, null, 2)}`);
