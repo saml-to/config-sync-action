@@ -33,7 +33,7 @@
     "typescript"
   ],
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.9.1",
     "axios": "^0.25.0",
     "boolean": "^3.1.4"
   },
