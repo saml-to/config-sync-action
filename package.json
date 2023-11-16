@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "axios": "^0.25.0",
+    "axios": "^1.6.0",
     "boolean": "^3.1.4"
   },
   "devDependencies": {
